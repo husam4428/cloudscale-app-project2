@@ -1,17 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-  resource_provider_registrations = "none"
-}
-
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
   location            = "Switzerland North"
@@ -38,16 +24,4 @@ resource "azurerm_container_group" "aci" {
     Project     = "Project2"
     StudentName = "Husam and Abdelmoez"
   }
-}
-
-output "resource_group_name" {
-  value = "husam-abdelmoez-proj2-aci-rg"
-}
-
-output "aci_public_ip" {
-  value = azurerm_container_group.aci.ip_address
-}
-
-output "aci_fqdn" {
-  value = azurerm_container_group.aci.fqdn
 }
