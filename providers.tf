@@ -8,10 +8,12 @@ terraform {
 }
 
 provider "azurerm" {
-  # حذفنا السطر المسبب للإيرور، واستبدلناه بقفل الميزات التي تسبب لك الـ 403
   features {
     resource_group {
       prevent_deletion_if_contains_resources = false
     }
   }
+  
+  # السطرين هادم يمنعوا تيرامورم من فحص الصلاحيات المسبقة على مستوى الاشتراك
+  skip_provider_registration = true
 }
