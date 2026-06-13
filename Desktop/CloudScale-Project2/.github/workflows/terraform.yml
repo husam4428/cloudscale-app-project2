@@ -14,7 +14,6 @@ jobs:
     name: 'Terraform Process'
     runs-on: ubuntu-latest
     
-    # هذا السطر السحري يجبر كل الخطوات على العمل داخل مجلد مشروعك الصحيح
     defaults:
       run:
         working-directory: ./Desktop/CloudScale-Project2
