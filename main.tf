@@ -1,5 +1,5 @@
 resource "azurerm_container_group" "aci" {
-  name                = "husam-abdelmoez-aci"
+  name                = "husam-abdelmoez-aci2"
   location            = "swedencentral"
   resource_group_name = "husam-abdelmoez-proj2-aci-rg" # الاسم المطابق لصورك بالظبط 🎯
   os_type             = "Linux"
