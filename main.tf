@@ -1,7 +1,16 @@
+# 1. هادي الخطوة بتخلي تيرامورم يقرا بيانات المجلد المتاح ليك ويجيب موقعة الجغرافي صح
+data "azurerm_resource_group" "rg" {
+  name = "husam-abdelmoez-proj2-aci-rg"
+}
+
+# 2. بناء الـ Container بناءً على موقع المجلد تلقائياً
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
-  location            = "westeurope"
-  resource_group_name = "husam-abdelmoez-proj2-aci-rg"
+  
+  # 👇 السطر هذا بياخد الموقع الصح والوحيد المسموح ليك بيه من المجلد نفسه
+  location            = data.azurerm_resource_group.rg.location
+  
+  resource_group_name = data.azurerm_resource_group.rg.name
   os_type             = "Linux"
   sku                 = "Standard"
   ip_address_type     = "Public"
