@@ -1,19 +1,11 @@
-variable "azure_client_id" {
-  type      = string
-  sensitive = true
+output "resource_group_name" {
+  value = "husam-abdelmoez-proj2-aci-rg"
 }
 
-variable "azure_client_secret" {
-  type      = string
-  sensitive = true
+output "aci_public_ip" {
+  value = azurerm_container_group.aci.ip_address
 }
 
-variable "azure_subscription_id" {
-  type      = string
-  sensitive = true
-}
-
-variable "azure_tenant_id" {
-  type      = string
-  sensitive = true
+output "aci_fqdn" {
+  value = azurerm_container_group.aci.fqdn
 }
