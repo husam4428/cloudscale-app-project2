@@ -2,16 +2,14 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0" 
+      version = "~> 3.0"
     }
   }
 }
 
 provider "azurerm" {
-  features {} # <-- هذه اللي كانت ناقصة ومسببة المشكلة في الصورة
+  features {}
 
-  client_id       = var.azure_client_id
-  client_secret   = var.azure_client_secret
-  subscription_id = var.azure_subscription_id
-  tenant_id       = var.azure_tenant_id
+  # 👇 هذا السطر السحري الذي يتخطى نقص صلاحيات حساب الجامعة ويمنع الـ 403
+  resource_provider_registrations = "none"
 }
