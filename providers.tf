@@ -6,11 +6,8 @@ terraform {
     }
   }
 }
-
 provider "azurerm" {
   features {}
-
-  # 👇 إجبار التيرامورم على القراءة من كود المتغيرات مباشرة ومنع الـ CLI تماماً
   client_id       = var.azure_client_id
   client_secret   = var.azure_client_secret
   subscription_id = var.azure_subscription_id
