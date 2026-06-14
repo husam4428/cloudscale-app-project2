@@ -1,14 +1,7 @@
-# 1️⃣ خطوة بناء الـ Resource Group تلقائياً لكي يملك التيرامورم صلاحياتها
-resource "azurerm_resource_group" "rg" {
-  name     = "husam-abdelmoez-proj2-aci-rg"
-  location = "swedencentral"
-}
-
-# 2️⃣ بناء الحاوية وربطها بالـ Resource Group أعلاه
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = "swedencentral"
+  resource_group_name = "husam-abdelmoez-proj2-aci-rg" # الاسم المطابق لصورك بالظبط 🎯
   os_type             = "Linux"
   sku                 = "Standard"
   ip_address_type     = "Public"
