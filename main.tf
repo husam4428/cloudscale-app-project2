@@ -1,12 +1,8 @@
+# بناء مجموعة الحاويات (ACI) داخل منطقة Sweden Central المسموحة
 resource "azurerm_container_group" "aci" {
   name                = var.container_group_name
-  
-  # 👇 تحديد الريجن الظاهر في صورتك مباشرة لتفادي الحظر
-  location            = "swedencentral" 
-  
-  # 👇 كتابة اسم المجلد مباشرة من المتغيرات وتخطي خطأ الـ data
+  location            = "swedencentral" # 🇸🇪 المنطقة الصحيحة والمطابقة لحسابكم
   resource_group_name = var.resource_group_name
-  
   os_type             = "Linux"
   sku                 = "Standard"
   ip_address_type     = "Public"
@@ -24,7 +20,7 @@ resource "azurerm_container_group" "aci" {
     }
   }
 
-  # الالتزام بالوسوم المطلوبة بالاسم في مستند المشروع (صفحة 2)
+  # الالتزام التام بالـ Tags المطلوبة بالاسم في مستند المشروع (صفحة 2)
   tags = {
     Project     = "Project2"
     Environment = "production"
