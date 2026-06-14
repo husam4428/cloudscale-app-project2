@@ -10,6 +10,9 @@ terraform {
 provider "azurerm" {
   features {}
 
-  # إيقاف الـ MSI والـ CLI وإجبار التيرامورم على قراءة الـ Secrets مباشرة
-  use_msi = false
+  # 👇 إجبار التيرامورم على القراءة من كود المتغيرات مباشرة ومنع الـ CLI تماماً
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tenant_id
 }
