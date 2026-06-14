@@ -1,10 +1,14 @@
+data "azurerm_resource_group" "rg" {
+  name = "husam-abdelmoez-proj2-aci-rg"
+}
+
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
   
-  # 👇 جرب هذا الريجن المضمون أولاً
-  location            = "westeurope" 
+  # 👇 يقرأ المنطقة المفتوحة والمربوطة بالمجلد تلقائياً
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
   
-  resource_group_name = "husam-abdelmoez-proj2-aci-rg"
   os_type             = "Linux"
   sku                 = "Standard"
   ip_address_type     = "Public"
