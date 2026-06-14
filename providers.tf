@@ -10,6 +10,6 @@ terraform {
 provider "azurerm" {
   features {}
 
-  # 👇 الفلاق البديل والمضمون لتخطي حظر صلاحيات الجامعة في الإصدارات القديمة
+  # منع التيرامورم من محاولة تسجيل أي شيء خارج حدود مجموعتك
   skip_provider_registration = true
 }
