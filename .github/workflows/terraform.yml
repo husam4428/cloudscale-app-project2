@@ -21,38 +21,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 👇 هنا التعديل الجوهري والحل السحري لمنع الـ CLI وتمرير الصلاحيات غصباً عنه
+      # 👇 الخطوة السحرية: تسجيل دخول رسمي وصريح لـ Azure لتجهيز الـ CLI ومنع الإيرور
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.7.0"
-          terraform_wrapper: false
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          TF_VAR_azure_client_id: ${{ secrets.ARM_CLIENT_ID }}
-          TF_VAR_azure_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_azure_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          TF_VAR_azure_tenant_id: ${{ secrets.ARM_TENANT_ID }}
         run: terraform plan -no-color
 
+      # سيتم الـ Apply الآن بنجاح لأن الـ Azure CLI أصبح مهيأ ومسجل الدخول بالفعل
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          TF_VAR_azure_client_id: ${{ secrets.ARM_CLIENT_ID }}
-          TF_VAR_azure_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-          TF_VAR_azure_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          TF_VAR_azure_tenant_id: ${{ secrets.ARM_TENANT_ID }}
         run: terraform apply -auto-approve -refresh=false -input=false
