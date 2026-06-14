@@ -1,6 +1,9 @@
-resource "azurerm_container_group" "aci" {
+rresource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
-  location            = "Switzerland North"
+  
+  # 👇 غيّرنا الموقع هنا إلى شرق أمريكا لتخطي سياسة الحظر الافتراضية
+  location            = "eastus" 
+  
   resource_group_name = "husam-abdelmoez-proj2-aci-rg"
   os_type             = "Linux"
   sku                 = "Standard"
