@@ -8,8 +8,12 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+  }
   
-  # منع تيرامورم من تسجيل الخدمات أو فحص الصلاحيات المسبقة للاشتراك
+  # السطرين هادم يمنعوا تيرامورم من فحص الصلاحيات المسبقة للاشتراك والخدمات
   skip_provider_registration = true
 }
