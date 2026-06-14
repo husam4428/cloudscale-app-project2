@@ -21,7 +21,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # تسجيل الدخول باستخدام الـ Service Principal والـ Secret اللي ضفتهم
       - name: Az CLI Login
         uses: azure/login@v2
         with:
@@ -32,7 +31,6 @@ jobs:
         with:
           terraform_version: "1.7.0"
 
-      # تمرير الـ Secrets لخطوات الـ Terraform كمتغيرات بيئة
       - name: Terraform Init
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -48,6 +46,11 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # السطور الأربعة الجاية هي اللي بتحل المشكلة في الـ Plan
+          TF_VAR_azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          TF_VAR_azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TF_VAR_azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          TF_VAR_azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
         run: terraform plan -no-color
 
       - name: Terraform Apply
@@ -57,4 +60,9 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # السطور الأربعة الجاية هي اللي بتحل المشكلة في الـ Apply
+          TF_VAR_azure_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          TF_VAR_azure_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          TF_VAR_azure_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          TF_VAR_azure_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
         run: terraform apply -auto-approve -refresh=false -input=false
