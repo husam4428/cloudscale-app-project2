@@ -1,20 +1,20 @@
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
   
-  # 👇 استخدام ريجن الطلاب القياسي لتخطي سياسة الحظر
-  location            = "centralus"
-  
+  # رجعناها لسويسرا نفس ريجن المجلد بتاعك
+  location            = "switzerlandnorth" 
   resource_group_name = "husam-abdelmoez-proj2-aci-rg"
   os_type             = "Linux"
   sku                 = "Standard"
-  ip_address_type     = "Public"
-  dns_name_label      = "cloudscale-husam-app"
+  
+  # 👇 الخدعة هنا: غيرناها لـ Private لتخطي حظر الـ Public IPs في اشتراكات الطلاب
+  ip_address_type     = "Private"
 
   container {
     name   = "webserver"
     image  = "husam4428/cloudscale-app:v1"
-    cpu    = "1.0"
-    memory = "1.0"
+    cpu    = "0.5"
+    memory = "1.5"
 
     ports {
       port     = 80
