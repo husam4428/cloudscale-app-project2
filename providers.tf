@@ -10,6 +10,6 @@ terraform {
 provider "azurerm" {
   features {}
 
-  # 👇 هذا السطر السحري الذي يتخطى نقص صلاحيات حساب الجامعة ويمنع الـ 403
-  resource_provider_registrations = "none"
+  # 👇 الفلاق البديل والمضمون لتخطي حظر صلاحيات الجامعة في الإصدارات القديمة
+  skip_provider_registration = true
 }
