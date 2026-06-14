@@ -94,3 +94,6 @@ Continuous Deployment Delivery: Hooked the automated configuration parameters in
 Production Repository Address: https://github.com/husam4428/cloudscale-app-project2
 
 
+....
+
+
