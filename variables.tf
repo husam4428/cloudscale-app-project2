@@ -3,12 +3,12 @@ variable "resource_group_name" {
   default = "husam-abdelmoez-proj2-aci-rg"
 }
 
-variable "location" {
+variable "container_group_name" {
   type    = string
-  default = "East US"
+  default = "husam-abdelmoez-aci"
 }
 
-variable "container_image" {
+variable "location" {
   type    = string
-  default = "husam4428/cloudscale-app:v1"
+  default = "centralus"
 }
