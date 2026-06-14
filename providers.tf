@@ -1,14 +1,17 @@
-variable "resource_group_name" {
-  type    = string
-  default = "husam-abdelmoez-proj2-aci-rg"
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0" 
+    }
+  }
 }
 
-variable "container_group_name" {
-  type    = string
-  default = "husam-abdelmoez-aci"
-}
+provider "azurerm" {
+  features {} # <-- هذه اللي كانت ناقصة ومسببة المشكلة في الصورة
 
-variable "image_name" {
-  type    = string
-  default = "husam4428/cloudscale-app:v1"
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tenant_id
 }
