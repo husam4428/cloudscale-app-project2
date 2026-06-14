@@ -8,7 +8,7 @@ variable "container_group_name" {
   default = "husam-abdelmoez-aci"
 }
 
-variable "location" {
+variable "image_name" {
   type    = string
-  default = "centralus"
+  default = "husam4428/cloudscale-app:v1"
 }
