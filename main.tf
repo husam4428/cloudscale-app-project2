@@ -1,6 +1,6 @@
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
-  location            = "eastus"
+  location            = "westeurope"
   resource_group_name = "husam-abdelmoez-proj2-aci-rg"
   os_type             = "Linux"
   sku                 = "Standard"
