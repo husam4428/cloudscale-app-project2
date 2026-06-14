@@ -9,4 +9,7 @@ terraform {
 
 provider "azurerm" {
   features {}
+
+  # إيقاف الـ MSI والـ CLI وإجبار التيرامورم على قراءة الـ Secrets مباشرة
+  use_msi = false
 }
