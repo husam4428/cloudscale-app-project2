@@ -2,15 +2,17 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0" # أو النسخة اللي تخدم بيها
+      version = "~> 3.0"
     }
   }
-  # إذا كنت مداير remote backend (تخزين سحابي) سيبه زي ما هو، أهم شيء البلوك اللي تحت 👇
 }
 
+# 👇 ربط الصلاحيات مباشرة داخل الـ Provider لتفادي خطأ الـ CLI
 provider "azurerm" {
   features {}
 
-  # 👇 السطور هادي تجبر التيرامورم يقرا الـ Secrets من الـ Workflow مباشرة وم يدورش الـ Azure CLI
-  use_msi = false
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tenant_id
 }
