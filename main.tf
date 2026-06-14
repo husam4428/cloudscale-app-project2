@@ -1,12 +1,10 @@
 resource "azurerm_container_group" "aci" {
   name                = "husam-abdelmoez-aci"
   
-  # 👇 هنا الخدعة: أجبرنا الحاوية تبني في أمريكا المفتوحة لاشتراكات الطلاب
-  location            = "eastus"
+  # 👇 جرب هذا الريجن المضمون أولاً
+  location            = "westeurope" 
   
-  # 👇 وهنا ربطناها بالمجلد الوحيد المتاح ليك في حسابك (حتى لو كان في سويسرا)
   resource_group_name = "husam-abdelmoez-proj2-aci-rg"
-  
   os_type             = "Linux"
   sku                 = "Standard"
   ip_address_type     = "Public"
