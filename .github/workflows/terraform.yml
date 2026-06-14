@@ -17,7 +17,6 @@ jobs:
     name: "Terraform Run"
     runs-on: ubuntu-latest
     
-    # 👇 هنا السر! وضع الصلاحيات القياسية لآشور على مستوى الـ Job بالكامل لمنع طلب az login
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -36,12 +35,10 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # سيعمل الـ Plan فقط في حال وجود Pull Request
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
         run: terraform plan -no-color
 
-      # سيعمل الـ Apply فقط عند الدمج (Push) في الـ main مع تخطي الـ read الإداري
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve -refresh=false
