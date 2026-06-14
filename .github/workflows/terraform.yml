@@ -17,12 +17,6 @@ jobs:
     name: "Terraform Plan"
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -35,21 +29,20 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      # حقن المتغيرات مباشرة أثناء الـ Plan لتفادي طلب az login
       - name: Terraform Plan
+        env:
+          TF_VAR_azure_client_id: ${{ secrets.ARM_CLIENT_ID }}
+          TF_VAR_azure_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_azure_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          TF_VAR_azure_tenant_id: ${{ secrets.ARM_TENANT_ID }}
         run: terraform plan -no-color
 
   terraform-apply:
     name: "Terraform Apply"
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # 👇 تفعيل خطوة الموافقة اليدوية (تأكد من إنشاء بيئة في ريبو الـ GitHub باسم production)
     environment: production 
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -62,6 +55,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # 👇 الخدعة القاضية لتخطي خطأ الـ read الإداري والبناء الفوري في السويد
+      # حقن المتغيرات مباشرة وتخطي خطأ الـ read الإداري عبر الـ refresh=false
       - name: Terraform Apply
+        env:
+          TF_VAR_azure_client_id: ${{ secrets.ARM_CLIENT_ID }}
+          TF_VAR_azure_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          TF_VAR_azure_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          TF_VAR_azure_tenant_id: ${{ secrets.ARM_TENANT_ID }}
         run: terraform apply -auto-approve -refresh=false
