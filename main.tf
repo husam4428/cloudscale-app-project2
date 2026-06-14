@@ -1,8 +1,7 @@
-# بناء مجموعة الحاويات (ACI) داخل منطقة Sweden Central المسموحة
 resource "azurerm_container_group" "aci" {
-  name                = var.container_group_name
-  location            = "swedencentral" # 🇸🇪 المنطقة الصحيحة والمطابقة لحسابكم
-  resource_group_name = var.resource_group_name
+  name                = "husam-abdelmoez-aci"
+  location            = "swedencentral" # 🇸🇪 ريجن السويد من صورتك
+  resource_group_name = "husam-abdelmoez-proj2-aci-rg"
   os_type             = "Linux"
   sku                 = "Standard"
   ip_address_type     = "Public"
@@ -10,7 +9,7 @@ resource "azurerm_container_group" "aci" {
 
   container {
     name   = "webserver"
-    image  = var.image_name
+    image  = "husam4428/cloudscale-app:v1"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -20,7 +19,6 @@ resource "azurerm_container_group" "aci" {
     }
   }
 
-  # الالتزام التام بالـ Tags المطلوبة بالاسم في مستند المشروع (صفحة 2)
   tags = {
     Project     = "Project2"
     Environment = "production"
