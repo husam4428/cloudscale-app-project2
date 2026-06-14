@@ -1,13 +1,13 @@
-# 1. قراءة المجلد الممنوح لك من الجامعة تلقائياً لتفادي إيرور الصلاحيات والـ Region
+# 1. قراءة المجلد الممنوح لك من الجامعة
 data "azurerm_resource_group" "rg" {
   name = "husam-abdelmoez-proj2-aci-rg"
 }
 
-# 2. إنشاء الشبكة الافتراضية في نفس موقع المجلد
+# 2. إنشاء الشبكة الافتراضية في الريجن المفتوح للطلاب
 resource "azurerm_virtual_network" "vnet" {
   name                = "cloudscale-vnet"
   address_space       = ["10.0.0.0/16"]
-  location            = data.azurerm_resource_group.rg.location
+  location            = "centralus" # 👇 ريجن الطلاب القياسي والمضمون
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
@@ -22,7 +22,7 @@ resource "azurerm_subnet" "subnet" {
 # 4. إنشاء الـ Public IP لتتمكن من فتح الموقع في المتصفح
 resource "azurerm_public_ip" "publicip" {
   name                = "cloudscale-ip"
-  location            = data.azurerm_resource_group.rg.location
+  location            = "centralus" # 👇 توجيه للريجن المفتوح
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = "Static"
 }
@@ -30,7 +30,7 @@ resource "azurerm_public_ip" "publicip" {
 # 5. إعدادات الحماية وفتح المنافذ (SSH 22 و HTTP 80)
 resource "azurerm_network_security_group" "nsg" {
   name                = "cloudscale-nsg"
-  location            = data.azurerm_resource_group.rg.location
+  location            = "centralus" # 👇 توجيه للريجن المفتوح
   resource_group_name = data.azurerm_resource_group.rg.name
 
   security_rule {
@@ -61,7 +61,7 @@ resource "azurerm_network_security_group" "nsg" {
 # 6. كرت الشبكة وربطه بالـ Subnet والـ IP العام
 resource "azurerm_network_interface" "nic" {
   name                = "cloudscale-nic"
-  location            = data.azurerm_resource_group.rg.location
+  location            = "centralus" # 👇 توجيه للريجن المفتوح
   resource_group_name = data.azurerm_resource_group.rg.name
 
   ip_configuration {
@@ -78,7 +78,7 @@ resource "azurerm_network_interface_security_group_association" "assoc" {
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-# 8. توليد مفتاح SSH ديناميكي داخل التيرامورم مباشرة لتفادي خطأ الملف المفقود
+# 8. توليد مفتاح SSH ديناميكي
 resource "tls_private_key" "ssh" {
   algorithm = "RSA"
   rsa_bits  = 4000
@@ -88,8 +88,8 @@ resource "tls_private_key" "ssh" {
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "cloudscale-vm"
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.rg.location
-  size                = "Standard_B1s" # الحجم الاقتصادي القياسي لاشتراكات الطلاب
+  location            = "centralus" # 👇 توجيه السيرفر للريجن المفتوح للطلاب
+  size                = "Standard_B1s" 
   admin_username      = "azureuser"
 
   network_interface_ids = [
@@ -113,6 +113,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  # 👇 قراءة السكربت مباشرة لتشغيل الحاوية فور نهوض السيرفر
-  custom_data = base64encode(file("cloud-init.sh"))
+  custom_data = base64encode(<<-EOF
+              #!/bin/bash
+              apt update -y
+              apt install docker.io -y
+              systemctl enable docker
+              systemctl start docker
+              docker run -d --restart always -p 80:80 husam4428/cloudscale-app:v1
+              EOF
+  )
 }
