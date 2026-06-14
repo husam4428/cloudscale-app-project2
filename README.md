@@ -50,7 +50,7 @@ docker push husam4428/cloudscale-app:v1
 
 ```
 
-لاش
+
 
 
 5. Terraform Setup Instructions
