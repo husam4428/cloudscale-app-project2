@@ -17,6 +17,7 @@ jobs:
     name: "Terraform Run"
     runs-on: ubuntu-latest
     
+    # الصلاحيات القياسية لآشور المربوطة بالـ Secrets في الريبو بتاعك
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -35,10 +36,13 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      # سيعمل الـ Plan فقط في حال وجود Pull Request
       - name: Terraform Plan
         if: github.event_name == 'pull_request'
         run: terraform plan -no-color
 
+      # سيعمل الـ Apply فقط عند الـ Push (الدمج) في الـ main
+      # تم إضافة -input=false لكسر أي تعليق أو طلب يدوّي فوراً
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -refresh=false
+        run: terraform apply -auto-approve -refresh=false -input=false
