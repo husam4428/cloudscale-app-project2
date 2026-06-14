@@ -72,12 +72,6 @@ Setup Terraform: Compiles the precise configuration binaries (v1.7.0).
 
 Terraform Init/Plan/Apply: Injects the system variables securely via dynamic runtime flags (TF_VAR_) to eliminate manual credential input prompts.
 
-7. Embedded Execution Evidence Screenshots
-Figure 1: App Registration SP Credentials Verification
-Figure 2: Designated Project Resource Group Status
-Figure 3: Azure Role Assignment Contributor Privileges
-Figure 4: Cloud Shell Provider Resource Registration Success
-Figure 5: GitHub Actions Pipeline Execution Success Run
 8. Step-by-Step Detailed Solution
 Application Packaging: The custom web application source was encapsulated inside a container utilizing a specialized base Linux configuration on Docker.
 
