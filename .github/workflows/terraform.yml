@@ -25,7 +25,9 @@ jobs:
       - name: "Az CLI Login"
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v3
@@ -47,7 +49,7 @@ jobs:
     name: "Terraform Apply"
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: production # ربط بوابه الموافقة اليدوية التي فعلتها في الإعدادات
+    environment: production
     
     steps:
       - name: "Checkout Code"
@@ -56,7 +58,9 @@ jobs:
       - name: "Az CLI Login"
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v3
